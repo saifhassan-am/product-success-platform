@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Product Success Console (demo)</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <a class="skip" href="#worklist">Skip to the worklist</a>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <div>
+        <strong>Product Success</strong>
+        <span class="demo-badge" title="Every person, site and number here is invented">Demo data</span>
+      </div>
+    </div>
+
+    <label class="field product-field">
+      <span class="sr-only">Product</span>
+      <select id="product"></select>
+    </label>
+
+    <div class="topbar-spacer"></div>
+
+    <div class="segmented" role="group" aria-label="Viewing as">
+      <button type="button" data-role="support" aria-pressed="true">Support</button>
+      <button type="button" data-role="pm" aria-pressed="false">Product</button>
+    </div>
+
+    <label class="switch" title="Refresh every few seconds, for watching the simulator">
+      <input type="checkbox" id="live">
+      <span>Live</span>
+    </label>
+
+    <button type="button" class="ghost" id="open-access-log">Access log</button>
+  </header>
+
+  <main>
+    <p class="role-note" id="role-note" hidden></p>
+
+    <section class="summary" aria-label="Summary">
+      <article class="card hero-card">
+        <h2 class="card-title" id="hero-label">New activations reaching First value within 30 days</h2>
+        <p class="hero" id="hero-value">&nbsp;</p>
+        <p class="muted" id="hero-sub"></p>
+      </article>
+
+      <article class="card">
+        <h2 class="card-title">Who's in the data</h2>
+        <div class="tiles" id="coverage"></div>
+      </article>
+
+      <article class="card">
+        <h2 class="card-title">Health</h2>
+        <ul class="health-list" id="health"></ul>
+      </article>
+    </section>
+
+    <section class="card" aria-labelledby="funnel-title">
+      <div class="card-head">
+        <div>
+          <h2 class="card-title" id="funnel-title">Where sites are</h2>
+          <p class="muted small">Sites that reached each stage. Select a stage to see who's stuck there.</p>
+        </div>
+        <button type="button" class="ghost small" id="funnel-table-toggle" aria-expanded="false">Show as table</button>
+      </div>
+      <div class="funnel" id="funnel"></div>
+      <div class="table-wrap" id="funnel-table" hidden></div>
+    </section>
+
+    <section class="card pilot" id="pilot" hidden aria-labelledby="pilot-title"></section>
+
+    <section class="card" id="worklist" aria-labelledby="worklist-title">
+      <div class="card-head">
+        <div>
+          <h2 class="card-title" id="worklist-title">Worklist</h2>
+          <p class="muted small" id="worklist-sub"></p>
+        </div>
+        <button type="button" class="secondary small" id="export">Export list</button>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Worklist view">
+        <button type="button" role="tab" data-view="today" aria-selected="true">Today's focus</button>
+        <button type="button" role="tab" data-view="stuck" aria-selected="false">All stuck</button>
+        <button type="button" role="tab" data-view="all" aria-selected="false">All opted-in sites</button>
+      </div>
+
+      <div class="filters">
+        <label class="field">
+          <span>Stage</span>
+          <select id="filter-stage">
+            <option value="">Any stage</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Health</span>
+          <select id="filter-health">
+            <option value="">Any health</option>
+            <option value="active">Active</option>
+            <option value="slipping">Slipping</option>
+            <option value="quiet">Gone quiet</option>
+            <option value="deactivated">Deactivated</option>
+            <option value="uninstalled">Uninstalled</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Sort</span>
+          <select id="filter-sort">
+            <option value="">Priority</option>
+            <option value="recent">Recently active</option>
+          </select>
+        </label>
+        <label class="field grow">
+          <span>Search</span>
+          <input type="search" id="filter-q" placeholder="Site, URL, name or email  ( / )" autocomplete="off">
+        </label>
+        <button type="button" class="ghost small" id="filter-clear" hidden>Clear filters</button>
+      </div>
+
+      <div class="table-wrap" id="worklist-table"></div>
+    </section>
+
+    <footer class="footnote">
+      Demo of the Product Success Platform plan. All accounts, sites and outcomes are invented;
+      every domain uses the reserved <code>.example</code> name. Contact details are visible to the Support role only,
+      and every detail view and export is written to the access log.
+    </footer>
+  </main>
+
+  <div class="scrim" id="scrim" hidden></div>
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" hidden>
+    <div class="drawer-inner" id="drawer-body"></div>
+  </aside>
+
+  <div class="modal" id="access-log" role="dialog" aria-modal="true" aria-labelledby="access-log-title" hidden>
+    <div class="modal-card">
+      <div class="card-head">
+        <h2 class="card-title" id="access-log-title">Access log</h2>
+        <button type="button" class="icon-btn" data-close aria-label="Close">×</button>
+      </div>
+      <p class="muted small">Who looked at or exported personal data, newest first.</p>
+      <div class="table-wrap" id="access-log-body"></div>
+    </div>
+  </div>
+
+  <div class="tooltip" id="tooltip" role="tooltip" hidden></div>
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

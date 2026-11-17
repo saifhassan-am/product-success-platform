@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="$description$">
+  <title>Product Success Platform spec</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+  <a class="skip" href="#content">Skip to the spec</a>
+
+  <header class="topbar">
+    <a class="brand" href="../"><span class="brand-mark" aria-hidden="true"></span>Product Success Platform</a>
+    <nav class="nav" aria-label="Site">
+      <a href="../">Overview</a>
+      <a href="./" aria-current="page">Spec</a>
+      <a href="../demo/">Demo</a>
+      <a href="https://github.com/saifhassan-am/product-success-platform">Source</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="toc" aria-label="On this page">
+      <details open id="toc-details">
+        <summary>On this page</summary>
+        $table-of-contents$
+      </details>
+    </aside>
+
+    <article id="content">
+      <header class="doc-head">
+        <h1>$title$</h1>
+        <p class="meta"><span class="pill">$status$</span><span>Owner: $owner$</span><span>Updated $date$</span></p>
+      </header>
+$body$
+    </article>
+  </div>
+
+  <script>
+    (() => {
+      const details = document.getElementById('toc-details');
+      // Open beside the text on wide screens, folded above it on narrow ones.
+      const narrow = window.matchMedia('(max-width: 960px)');
+      details.open = !narrow.matches;
+      narrow.addEventListener('change', (e) => { details.open = !e.matches; });
+
+      const links = Array.from(document.querySelectorAll('.toc a[href^="#"]'));
+      links.forEach((a) => a.addEventListener('click', () => { if (narrow.matches) details.open = false; }));
+      const targets = links
+        .map((a) => [a, document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1)))])
+        .filter(([, h]) => h);
+
+      // Highlight the section being read.
+      let ticking = false;
+      const update = () => {
+        ticking = false;
+        let current = null;
+        for (const [a, h] of targets) {
+          if (h.getBoundingClientRect().top < 120) current = a;
+          else break;
+        }
+        links.forEach((a) => a.classList.toggle('active', a === current));
+      };
+      window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+      update();
+    })();
+  </script>
+</body>
+</html>

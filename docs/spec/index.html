@@ -1,0 +1,1141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="What the Product Success Platform
+tracks, how consent works, and how the support console and pilot
+behave.">
+  <title>Product Success Platform spec</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+  <a class="skip" href="#content">Skip to the spec</a>
+
+  <header class="topbar">
+    <a class="brand" href="../"><span class="brand-mark" aria-hidden="true"></span>Product Success Platform</a>
+    <nav class="nav" aria-label="Site">
+      <a href="../">Overview</a>
+      <a href="./" aria-current="page">Spec</a>
+      <a href="../demo/">Demo</a>
+      <a href="https://github.com/saifhassan-am/product-success-platform">Source</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="toc" aria-label="On this page">
+      <details open id="toc-details">
+        <summary>On this page</summary>
+        <ul>
+        <li><a href="#goal" id="toc-goal">Goal</a></li>
+        <li><a href="#user-story" id="toc-user-story">User
+        Story</a></li>
+        <li><a href="#design" id="toc-design">Design</a></li>
+        <li><a href="#specs" id="toc-specs">Specs</a>
+        <ul>
+        <li><a href="#user-journey-context"
+        id="toc-user-journey-context">User journey context</a></li>
+        <li><a href="#part-1-what-we-track"
+        id="toc-part-1-what-we-track">Part 1: What we track</a></li>
+        <li><a href="#part-2-consent" id="toc-part-2-consent">Part 2:
+        Consent</a></li>
+        <li><a href="#part-3-the-support-console"
+        id="toc-part-3-the-support-console">Part 3: The support
+        console</a></li>
+        <li><a href="#part-4-the-pilot" id="toc-part-4-the-pilot">Part
+        4: The pilot</a></li>
+        </ul></li>
+        <li><a href="#validation--edge-cases"
+        id="toc-validation--edge-cases">Validation &amp; Edge Cases</a>
+        <ul>
+        <li><a href="#warning-owners-testing-their-own-product"
+        id="toc-warning-owners-testing-their-own-product">⚠️ Owners
+        testing their own product</a></li>
+        <li><a href="#warning-existing-customers-who-opt-in"
+        id="toc-warning-existing-customers-who-opt-in">⚠️ Existing
+        customers who opt in</a></li>
+        <li><a href="#warning-the-same-milestone-reported-twice"
+        id="toc-warning-the-same-milestone-reported-twice">⚠️ The same
+        milestone reported twice</a></li>
+        <li><a href="#warning-staging-and-cloned-sites"
+        id="toc-warning-staging-and-cloned-sites">⚠️ Staging and cloned
+        sites</a></li>
+        <li><a href="#warning-php-or-wordpress-changes"
+        id="toc-warning-php-or-wordpress-changes">⚠️ PHP or WordPress
+        changes</a></li>
+        <li><a href="#warning-consent-withdrawn"
+        id="toc-warning-consent-withdrawn">⚠️ Consent withdrawn</a></li>
+        <li><a href="#warning-agencies-and-many-site-accounts"
+        id="toc-warning-agencies-and-many-site-accounts">⚠️ Agencies and
+        many-site accounts</a></li>
+        <li><a href="#warning-holdout-accounts"
+        id="toc-warning-holdout-accounts">⚠️ Holdout accounts</a></li>
+        <li><a href="#warning-duplicated-imported-and-draft-campaigns"
+        id="toc-warning-duplicated-imported-and-draft-campaigns">⚠️
+        Duplicated, imported and draft campaigns</a></li>
+        <li><a href="#warning-quiet-low-traffic-sites"
+        id="toc-warning-quiet-low-traffic-sites">⚠️ Quiet, low-traffic
+        sites</a></li>
+        <li><a href="#warning-wrong-clocks"
+        id="toc-warning-wrong-clocks">⚠️ Wrong clocks</a></li>
+        </ul></li>
+        <li><a href="#success-criteria"
+        id="toc-success-criteria">Success Criteria</a>
+        <ul>
+        <li><a href="#tracking" id="toc-tracking">Tracking</a></li>
+        <li><a href="#console" id="toc-console">Console</a></li>
+        <li><a href="#outcomes" id="toc-outcomes">Outcomes</a></li>
+        </ul></li>
+        <li><a href="#out-of-scope" id="toc-out-of-scope">Out of
+        Scope</a></li>
+        <li><a href="#open-questions" id="toc-open-questions">Open
+        Questions</a></li>
+        </ul>
+      </details>
+    </aside>
+
+    <article id="content">
+      <header class="doc-head">
+        <h1>Product Success Platform</h1>
+        <p class="meta"><span class="pill">Draft for
+review</span><span>Owner: Saif Hassan (Product
+Manager)</span><span>Updated November 18, 2026</span></p>
+      </header>
+<h2 id="goal">Goal</h2>
+<p>Know which stage every customer site is at in every Thrive product,
+and give support a short daily list of the customers they can actually
+help move forward.</p>
+<ul>
+<li>One five-stage ladder for every product (Activated, Built, Live,
+First value, Adopted), so everyone speaks the same language.</li>
+<li>A site profile that always shows the latest site name, PHP version,
+WordPress version and other setup details, updated in place.</li>
+<li>A support console: who's stuck, why, what to say, and a record of
+every contact.</li>
+<li>A built-in pilot that measures whether outreach works, against
+customers nobody contacted.</li>
+<li>Product managers get real adoption numbers in Metabase, without
+seeing anyone's name or email.</li>
+</ul>
+<h2 id="user-story">User Story</h2>
+<p>As a <strong>support team member</strong>, I want a short,
+prioritized list of customers who are stuck and likely to respond, with
+what's in their way and a message to start from, so that my time goes
+where it moves people forward.</p>
+<p>As a <strong>product manager</strong>, I want to see where customers
+stall in each product, so that I can fix the step that loses the most
+people instead of guessing.</p>
+<p>As a <strong>customer</strong>, I want to choose whether Thrive sees
+my setup progress, and to know exactly what that means, so that any help
+I get is welcome and nothing is collected behind my back.</p>
+<h2 id="design">Design</h2>
+<p>🚧 Figma pending. Until then, the <a href="../demo/">working demo</a>
+is the design reference. Screenshots below are from it, with invented
+data.</p>
+<figure>
+<img src="screenshots/01-summary-and-funnel.jpg"
+alt="Summary and stage funnel" />
+<figcaption aria-hidden="true">Summary and stage funnel</figcaption>
+</figure>
+<figure>
+<img src="screenshots/02-pilot-and-worklist.jpg"
+alt="Pilot panel and worklist" />
+<figcaption aria-hidden="true">Pilot panel and worklist</figcaption>
+</figure>
+<figure>
+<img src="screenshots/03-site-drawer.jpg" alt="Site detail" />
+<figcaption aria-hidden="true">Site detail</figcaption>
+</figure>
+<figure>
+<img src="screenshots/04-site-profile.jpg"
+alt="Site profile, latest values only" />
+<figcaption aria-hidden="true">Site profile, latest values
+only</figcaption>
+</figure>
+<h2 id="specs">Specs</h2>
+<h3 id="user-journey-context">User journey context</h3>
+<ul>
+<li><strong>The customer</strong> installs a Thrive product, activates
+it, and connects their Thrive account during onboarding. That's where
+they're asked about "Help me succeed." Most people want to get a
+campaign or course live quickly; they're not thinking about data
+sharing, so the ask must be short, honest, and easy to decline.</li>
+<li><strong>Support</strong> starts the day in the console's "Today's
+focus" list, works through it, and logs what they did. They also look
+customers up when a ticket comes in.</li>
+<li><strong>Product managers</strong> read the funnel in Metabase to
+decide what to fix next. They never need contact details.</li>
+</ul>
+<hr />
+<h3 id="part-1-what-we-track">Part 1: What we track</h3>
+<h4 id="the-stage-ladder">The stage ladder</h4>
+<p>Every product maps its own moments onto the same five stages. Stage
+is the furthest a site has ever got, so it never goes backwards.</p>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Stage</th>
+<th>Means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Activated</td>
+<td>The product is turned on, on a real (production) site</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Built</td>
+<td>The customer made the first real thing</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Live</td>
+<td>That thing is in front of real visitors</td>
+</tr>
+<tr>
+<td>4</td>
+<td>First value</td>
+<td>It produced the outcome they bought it for</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Adopted</td>
+<td>The outcome keeps coming, week after week</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="thrive-leads-first-product">Thrive Leads (first product)</h4>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Counted when</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Activated</td>
+<td>Thrive Leads is turned on</td>
+<td></td>
+</tr>
+<tr>
+<td>Built</td>
+<td>The first campaign is created</td>
+<td>Drafts count. "Created" means they tried.</td>
+</tr>
+<tr>
+<td>Live</td>
+<td><strong>A real visitor first sees a campaign</strong></td>
+<td>Not when it's saved as published: campaigns are saved as published
+the moment they're created. The site owner previewing their own campaign
+doesn't count.</td>
+</tr>
+<tr>
+<td>First value</td>
+<td><strong>Leads come from at least two different people</strong></td>
+<td>Email sign-ups only, not button clicks. One isn't enough, because
+most owners test their own form, often logged out.</td>
+</tr>
+<tr>
+<td>Adopted</td>
+<td>New leads in at least 3 of the last 4 weeks</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4
+id="other-products-proposed-each-owner-signs-off-before-it-ships">Other
+products (proposed, each owner signs off before it ships)</h4>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Product</th>
+<th>Built</th>
+<th>Live</th>
+<th>First value</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Thrive Apprentice</td>
+<td>First course with a lesson</td>
+<td>Course published</td>
+<td>First student enrolled</td>
+<td>Wave 2</td>
+</tr>
+<tr>
+<td>Thrive Quiz Builder</td>
+<td>First complete quiz</td>
+<td>First quiz seen by a visitor</td>
+<td>First quiz completed</td>
+<td>Wave 2</td>
+</tr>
+<tr>
+<td>Thrive Ultimatum</td>
+<td>First campaign</td>
+<td>Campaign running</td>
+<td>First conversion</td>
+<td>Wave 3</td>
+</tr>
+<tr>
+<td>Thrive Optimize</td>
+<td>First test</td>
+<td>Test started</td>
+<td>Test finished with a winner</td>
+<td>Wave 3</td>
+</tr>
+<tr>
+<td>Thrive Automator</td>
+<td>First automation</td>
+<td>Automation active</td>
+<td>First successful run</td>
+<td>Wave 3</td>
+</tr>
+<tr>
+<td>Thrive Ovation, Architect, Theme Builder, Comments</td>
+<td></td>
+<td></td>
+<td>Needs a product decision on what "value" means</td>
+<td>Later</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="health">Health</h4>
+<p>Stage says how far a site got. Health says whether it's still
+there.</p>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Health</th>
+<th>Shown when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>✓ Active</td>
+<td>The site checked in within the last 10 days</td>
+</tr>
+<tr>
+<td>! Slipping</td>
+<td>It reached First value before, but has had no results for 30
+days</td>
+</tr>
+<tr>
+<td>… Gone quiet</td>
+<td>No check-in for more than 10 days</td>
+</tr>
+<tr>
+<td>‖ Deactivated</td>
+<td>The product is turned off but still installed</td>
+</tr>
+<tr>
+<td>× Uninstalled</td>
+<td>The product was removed</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Health is always shown as icon, label and color together, never color
+alone.</p>
+<h4 id="when-is-someone-stuck">When is someone "stuck"?</h4>
+<p>Stuck means "in the current stage longer than usual, while still
+active." "Usual" is learned from real data: the point after which
+customers rarely move on by themselves. Until there's enough data, these
+defaults apply:</p>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Moving from</th>
+<th>To</th>
+<th>Stuck after</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Activated</td>
+<td>Built</td>
+<td>3 days</td>
+</tr>
+<tr>
+<td>Built</td>
+<td>Live</td>
+<td>7 days</td>
+</tr>
+<tr>
+<td>Live</td>
+<td>First value</td>
+<td>14 days</td>
+</tr>
+<tr>
+<td>First value</td>
+<td>Adopted</td>
+<td>30 days</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="site-profile">Site profile</h4>
+<p>One record per site. When a value changes, the record is overwritten
+in place. <strong>No history is kept.</strong></p>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Example</th>
+<th>Tier</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Site name</td>
+<td>Lumen Pottery</td>
+<td>Help me succeed only</td>
+<td></td>
+</tr>
+<tr>
+<td>Site address</td>
+<td>lumenpottery.example</td>
+<td>Help me succeed only</td>
+<td></td>
+</tr>
+<tr>
+<td>PHP version</td>
+<td>8.3.27</td>
+<td>Both</td>
+<td>Flagged when below Thrive's minimum (8.1), or on 8.1, which no
+longer gets security updates</td>
+</tr>
+<tr>
+<td>WordPress version</td>
+<td>7.1</td>
+<td>Both</td>
+<td>Flagged when 2 or more versions behind the newest we see</td>
+</tr>
+<tr>
+<td>Database version</td>
+<td>MariaDB 10.11</td>
+<td>Both</td>
+<td></td>
+</tr>
+<tr>
+<td>Thrive product versions</td>
+<td>Thrive Leads 11.2</td>
+<td>Both</td>
+<td>Flagged when 2 or more releases behind</td>
+</tr>
+<tr>
+<td>Language</td>
+<td>en_US</td>
+<td>Both</td>
+<td></td>
+</tr>
+<tr>
+<td>Multisite</td>
+<td>No</td>
+<td>Both</td>
+<td></td>
+</tr>
+<tr>
+<td>Environment</td>
+<td>production, staging or local</td>
+<td>Both</td>
+<td>Staging and local sites are left out of every number</td>
+</tr>
+<tr>
+<td>Theme</td>
+<td>Thrive Theme Builder</td>
+<td>Both</td>
+<td></td>
+</tr>
+<tr>
+<td>Other relevant plugins</td>
+<td>WooCommerce, WP Rocket</td>
+<td>Both</td>
+<td>A short list of plugins that matter to us (page builders, caching,
+email and CRM, competitors). Never the full list.</td>
+</tr>
+<tr>
+<td>Last admin seen</td>
+<td>3 days ago</td>
+<td>Both</td>
+<td>A strong sign of whether anyone will read an email</td>
+</tr>
+<tr>
+<td>Connected Thrive account</td>
+<td>(account ID)</td>
+<td>Help me succeed only</td>
+<td>Name, email and plan come from our own account records. The site
+never sends an email address.</td>
+</tr>
+<tr>
+<td>Consent given</td>
+<td>Help me succeed, version and date</td>
+<td>Both</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The profile updates right after a WordPress update, and whenever a
+daily check notices a change, such as a new PHP version.</p>
+<h4 id="what-we-never-collect">What we never collect</h4>
+<ul>
+<li>Anything about the customer's own visitors, including the leads they
+capture</li>
+<li>Form contents, passwords, API keys, webhook addresses</li>
+<li>The full plugin list</li>
+</ul>
+<hr />
+<h3 id="part-2-consent">Part 2: Consent</h3>
+<h4 id="two-tiers">Two tiers</h4>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>What's shared</th>
+<th>Who can say yes</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Anonymous product data</td>
+<td>Versions, counts and stages, with no name, address or account. This
+is today's promise and it doesn't change.</td>
+<td>Any site admin</td>
+<td>Off</td>
+</tr>
+<tr>
+<td>Help me succeed</td>
+<td>Adds site name, address and the connected Thrive account, and
+<strong>lets our team contact you</strong></td>
+<td>The <strong>account holder</strong> only</td>
+<td>Off</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="where-its-asked">Where it's asked</h4>
+<p>During onboarding, when the customer connects their Thrive account,
+and as a setting in their Thrive account. Customers who connected before
+this ships see one dismissible invitation in Thrive Dashboard.</p>
+<h4 id="copy-draft-legal-must-approve">Copy (draft, legal must
+approve)</h4>
+<blockquote>
+<p><strong>Want our team's help getting results?</strong></p>
+<p>Share your setup progress with Thrive Themes. We'll see your site's
+name and address, which Thrive products you use, how far you've got with
+each (for example, whether your first campaign is live), and your PHP
+and WordPress versions. When it looks like you're stuck, our support
+team may email you with help.</p>
+<p>We never see your visitors or the leads you collect.</p>
+<p>[ <strong>Yes, help me succeed</strong> ] [ No thanks ]</p>
+<p>You can change this anytime in Thrive Dashboard settings. [See
+exactly what we share]</p>
+</blockquote>
+<p>Settings toggle label: <strong>Help me succeed.</strong> Helper text:
+<em>"Share your setup progress so the Thrive team can help you. We may
+email you when you seem stuck."</em></p>
+<hr />
+<h3 id="part-3-the-support-console">Part 3: The support console</h3>
+<h4 id="entry">Entry</h4>
+<ul>
+<li>Support opens the console from the internal tools menu. It lands on
+the product they last used, on <strong>Today's focus</strong>.</li>
+<li>The header holds the product picker, the <strong>Support</strong> /
+<strong>Product</strong> role switch, a <strong>Live</strong> toggle
+that refreshes every few seconds, and <strong>Access log</strong>.</li>
+</ul>
+<h4 id="summary">Summary</h4>
+<ul>
+<li><strong>Hero number:</strong> "New activations reaching First value
+within 30 days." The one number the whole effort exists to move.</li>
+<li><strong>Who's in the data:</strong> sites sharing data (anonymous
+vs. identified), accounts support can contact, staging and local sites
+left out, and how many customers withdrew consent.</li>
+<li><strong>Health:</strong> a count for each health state. Selecting
+one filters the list.</li>
+</ul>
+<h4 id="where-sites-are">Where sites are</h4>
+<ul>
+<li>One bar per stage, in stage order, all in one color. Length shows
+how many sites reached that stage.</li>
+<li>Beside each bar: share of the previous stage, how many accounts are
+stuck and can be contacted, and when "stuck" starts (and whether that
+comes from data or the default).</li>
+<li>Selecting a stage opens <strong>All stuck</strong>, filtered to that
+stage. Selecting it again clears the filter.</li>
+<li><strong>Show as table</strong> shows the same numbers as a
+table.</li>
+</ul>
+<h4 id="the-pilot">The pilot</h4>
+<p>Shown for the pilot product only. See Part 4.</p>
+<ul>
+<li>Two progress bars, Contact and Holdout, toward the planned
+size.</li>
+<li>Until the planned size is reached: <strong>"Too early to
+read"</strong>, with the current pace and a projected finish date. If
+the pace means the pilot would take more than six months, it says so
+plainly.</li>
+<li><strong>Early numbers (don't decide on these)</strong> is collapsed
+by default.</li>
+</ul>
+<h4 id="worklist">Worklist</h4>
+<p><strong>Tabs</strong></p>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Tab</th>
+<th>Shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Today's focus</td>
+<td>The 15 accounts most likely to respond today, one row per
+account</td>
+</tr>
+<tr>
+<td>All stuck</td>
+<td>Every contactable account past the usual time for its stage, one row
+per account</td>
+</tr>
+<tr>
+<td>All opted-in sites</td>
+<td>Every production site whose account holder opted in</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Filters</strong> (one row, above the list): Stage, Health,
+Sort (<strong>Priority</strong> or <strong>Recently active</strong>),
+Search (site, address, name or email). <strong>Clear filters</strong>
+appears when any filter is set. On Today's focus, filters only narrow
+what's shown; they never change who is on the list.</p>
+<p><strong>Columns</strong></p>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Priority</td>
+<td>Score, plus the reasons behind it as small chips, for example "2×
+the usual time", "Admin active today", "Agency, 11 sites"</td>
+</tr>
+<tr>
+<td>Site</td>
+<td>Site name, address, account holder's name and email, and "+N more
+stuck sites on this account" when relevant</td>
+</tr>
+<tr>
+<td>Stage</td>
+<td>Stage number and this product's name for it, with five dots showing
+progress</td>
+</tr>
+<tr>
+<td>Time in stage</td>
+<td>Days, and how that compares to usual. A "+" means "at least," for
+customers whose earlier dates we don't time.</td>
+</tr>
+<tr>
+<td>Health</td>
+<td>Icon and label</td>
+</tr>
+<tr>
+<td>Setup</td>
+<td>PHP and WordPress versions, flagged when outdated (moves into site
+detail on narrower screens)</td>
+</tr>
+<tr>
+<td>Pilot</td>
+<td><strong>Contact</strong>, or <strong>Holdout: don't
+contact</strong></td>
+</tr>
+<tr>
+<td>Next step</td>
+<td>The suggested action, and when they were last contacted</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Priority</strong> favors customers likely to respond, not
+just customers at risk:</p>
+<ul>
+<li>How far past the usual time they are. This peaks around twice the
+usual time and fades after, because someone who stalled last week is
+likelier to respond than someone who stalled four months ago.</li>
+<li>Whether an admin was in the dashboard recently. No admin for 30+
+days pushes a customer down the list.</li>
+<li>Agencies and customers using several Thrive products move up: one
+conversation helps many sites.</li>
+<li>Renewal date is deliberately <strong>not</strong> used. That would
+turn "help me succeed" into retention outreach, which isn't what
+customers agreed to.</li>
+</ul>
+<p><strong>Actions:</strong> selecting a row opens Site detail.
+<strong>Export list</strong> downloads the current list with account IDs
+and stages, never names or emails.</p>
+<h4 id="site-detail">Site detail</h4>
+<p>Opens as a panel on the right. Sections, top to bottom:</p>
+<ol type="1">
+<li><strong>Header:</strong> site name, address, account holder, plan,
+"Help me succeed" badge, agency badge, product.</li>
+<li><strong>Facts:</strong> stage, health, days in this stage (and when
+stuck starts), priority, and the reasons.</li>
+<li><strong>Pilot notice:</strong> in the contact group since a date; or
+<strong>"Holdout: don't contact them first"</strong> with "If they reach
+out, help them normally."</li>
+<li><strong>Journey:</strong> the five stages with the date each was
+reached, "Not yet," or "before opt-in."</li>
+<li><strong>What's in the way:</strong> specific blockers, for example
+"No email service connected," "A campaign is set to display, but no real
+visitor has seen it in 5 days," "PHP 8.1 stopped getting security
+updates at the end of 2025," "WordPress 6.8.3 is 3 versions behind 7.1."
+If none: "Nothing blocking that we can see."</li>
+<li><strong>Suggested next step:</strong> a title, why it matters, and a
+message to start from that's filled in with this customer's details and
+meant to be edited. Buttons: <strong>Copy message</strong>, then the
+contact form.</li>
+<li><strong>Results per week:</strong> the last 8 weeks (for Leads, new
+leads). If none: "No new leads in the last 8 weeks."</li>
+<li><strong>Timeline:</strong> milestones reached, activation and
+deactivation, contacts logged, pilot assignment.</li>
+<li><strong>Site profile:</strong> every profile field, with "Latest
+values only. Updated in place when they change; no history is
+kept."</li>
+<li><strong>Thrive products on this site,</strong> each with its stage
+and health, and <strong>Other sites on this account.</strong></li>
+</ol>
+<h4 id="logging-a-contact">Logging a contact</h4>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Options</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Channel</td>
+<td>Select</td>
+<td>Yes</td>
+<td>Email (default), Chat, Call, Ticket reply</td>
+</tr>
+<tr>
+<td>Outcome</td>
+<td>Select</td>
+<td>Yes</td>
+<td>Sent (default), Replied, Call booked, No response, Not
+interested</td>
+</tr>
+<tr>
+<td>Note</td>
+<td>Text</td>
+<td>No</td>
+<td>Up to 2,000 characters. Placeholder: "Optional, e.g. sent the
+display rules checklist"</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Button: <strong>Log contact.</strong> On success: toast "Contact
+logged," and the entry appears at the top of the timeline.</p>
+<h4 id="states">States</h4>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>What the user sees</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Loading</td>
+<td>The current view stays on screen, slightly faded, until the new data
+arrives. No spinners, no layout jump.</td>
+</tr>
+<tr>
+<td>Empty list</td>
+<td>"Nobody is stuck right now. Every contactable account is within the
+usual time for its stage."</td>
+</tr>
+<tr>
+<td>No filter matches</td>
+<td>"No sites match these filters. Try a different stage or health, or
+clear the filters." with <strong>Clear filters</strong></td>
+</tr>
+<tr>
+<td>No results chart</td>
+<td>"No new leads in the last 8 weeks."</td>
+</tr>
+<tr>
+<td>Server unreachable</td>
+<td>Error toast: "Can't reach the server," and the last view stays on
+screen</td>
+</tr>
+<tr>
+<td>Contact logged</td>
+<td>Toast: "Contact logged"</td>
+</tr>
+<tr>
+<td>Message copied</td>
+<td>Toast: "Message copied"</td>
+</tr>
+<tr>
+<td>Export</td>
+<td>Toast: "Exported. The file has account IDs and stages, no contact
+details."</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="error-messages">Error messages</h4>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>When</th>
+<th>Message</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Logging contact for a holdout account</td>
+<td>"This account is in the pilot holdout. Help them if they reach out,
+but don't contact them first."</td>
+</tr>
+<tr>
+<td>The account holder didn't opt in</td>
+<td>"The account holder hasn't agreed to be contacted."</td>
+</tr>
+<tr>
+<td>Product role tries to log contact</td>
+<td>"Only the support role can log outreach."</td>
+</tr>
+<tr>
+<td>Channel or outcome missing</td>
+<td>"Pick a channel and an outcome."</td>
+</tr>
+<tr>
+<td>Note too long</td>
+<td>"Keep the note under 2,000 characters."</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="permissions-and-access">Permissions and access</h4>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Sees</th>
+<th>Can</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Support</td>
+<td>Names, emails, site addresses</td>
+<td>Everything: log contacts, export, view the access log</td>
+</tr>
+<tr>
+<td>Product</td>
+<td>Pseudonymous site IDs and account IDs only, the same as Metabase. A
+note explains this. Search is off.</td>
+<td>Read everything else; can't log contacts</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>Every look at a customer's details and every export goes into the
+<strong>Access log</strong>, once per person, per site, per 30
+minutes.</li>
+<li>Customers who withdraw consent disappear from the console. Only a
+count remains.</li>
+</ul>
+<h4 id="micro-interactions">Micro-interactions</h4>
+<ul>
+<li>Hovering a funnel bar or a week's result shows its exact numbers.
+Every number in a tooltip is also on the page somewhere.</li>
+<li>With <strong>Live</strong> on, a row that moves up a stage briefly
+highlights, with a toast: "Lumen Pottery moved to 3. First campaign
+live."</li>
+<li>Keyboard: <strong>/</strong> focuses search, <strong>Enter</strong>
+opens a row, <strong>Esc</strong> closes the panel or the access
+log.</li>
+</ul>
+<h4 id="mobile-and-smaller-screens">Mobile and smaller screens</h4>
+<p>The console works on a laptop first. On narrower screens the summary
+stacks, the Setup column moves into Site detail, and the list scrolls
+sideways inside its card rather than the whole page.</p>
+<hr />
+<h3 id="part-4-the-pilot">Part 4: The pilot</h3>
+<p>The pilot answers one question before we invest in outreach at scale:
+does contacting stuck customers actually move them forward?</p>
+<div class="table-wrap">
+<table>
+<tbody>
+<tr>
+<td>Product and stage</td>
+<td>Thrive Leads, Live to First value</td>
+</tr>
+<tr>
+<td>Who's randomized</td>
+<td>Accounts (so an agency's sites never end up in both groups)</td>
+</tr>
+<tr>
+<td>When</td>
+<td>The first time an account appears in Today's focus at that
+stage</td>
+</tr>
+<tr>
+<td>Split</td>
+<td>50/50, Contact or Holdout</td>
+</tr>
+<tr>
+<td>Measured from</td>
+<td>The moment of assignment, for both groups, whether or not the
+contact happened</td>
+</tr>
+<tr>
+<td>Result</td>
+<td>Share that reached First value within 30 days</td>
+</tr>
+<tr>
+<td>Size</td>
+<td>About 250 accounts per group, to detect a jump from 15% to 25%</td>
+</tr>
+<tr>
+<td>Read</td>
+<td>Once, at the planned size</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Holdout accounts still get full support when they reach out. Only
+proactive outreach is withheld.</p>
+<h2 id="validation--edge-cases">Validation &amp; Edge Cases</h2>
+<h3 id="warning-owners-testing-their-own-product">⚠️ Owners testing
+their own product</h3>
+<p>When the site owner previews their own campaign while logged in: → It
+doesn't count as Live.</p>
+<p>When the owner tests their own form while logged out: → It counts as
+one person. First value needs two different people.</p>
+<p><strong>Rationale:</strong> Almost everyone tests their own setup.
+Counting it would make First value meaningless.</p>
+<h3 id="warning-existing-customers-who-opt-in">⚠️ Existing customers who
+opt in</h3>
+<p>When a site that's been using the product for a while opts in: → It
+reports where it already is, marked "before opt-in." Those dates show in
+the journey but are never used to work out how long stages usually
+take.</p>
+<p>When a site opts in within a day of activating, with nothing built
+yet: → It counts as a new activation, with its real date.</p>
+<p><strong>Rationale:</strong> Consent is always asked after activation.
+Without the second rule, no new activation would ever be timed.</p>
+<h3 id="warning-the-same-milestone-reported-twice">⚠️ The same milestone
+reported twice</h3>
+<p>When a site sends a milestone it already sent (a retry, a reinstall,
+a restored backup): → Nothing changes. The site keeps its first date,
+and the timeline shows it once.</p>
+<p><strong>Rationale:</strong> "First" has to mean first, even when the
+site itself has forgotten.</p>
+<h3 id="warning-staging-and-cloned-sites">⚠️ Staging and cloned
+sites</h3>
+<p>When a site is copied to a new address (a staging copy, a migration):
+→ The copy is treated as a new site.</p>
+<p>When a site is marked or looks like staging or local: → It's left out
+of every number and every list.</p>
+<p><strong>Rationale:</strong> A staging copy shouldn't claim the real
+site's first conversion.</p>
+<h3 id="warning-php-or-wordpress-changes">⚠️ PHP or WordPress
+changes</h3>
+<p>When a site upgrades PHP or WordPress: → The profile shows the new
+version within a day (right away for WordPress updates). The old value
+is overwritten, not kept.</p>
+<p><strong>Rationale:</strong> What the team needs is what the customer
+is running now. History was considered and left out on purpose; see Open
+Questions.</p>
+<h3 id="warning-consent-withdrawn">⚠️ Consent withdrawn</h3>
+<p>When a customer turns off "Help me succeed": → Collection stops
+immediately, their identified data is deleted, and they disappear from
+the console. Only a count of withdrawals remains.</p>
+<h3 id="warning-agencies-and-many-site-accounts">⚠️ Agencies and
+many-site accounts</h3>
+<p>When one account has many sites: → The list shows one row per
+account, with "+N more stuck sites on this account." The account holder
+is who gets contacted, not the agency's clients.</p>
+<h3 id="warning-holdout-accounts">⚠️ Holdout accounts</h3>
+<p>When support opens a holdout account: → No ready-to-send message is
+shown, and <strong>Log contact</strong> is disabled with "Holdout
+accounts are not contacted first."</p>
+<p>When a holdout customer writes in: → Support helps them normally.</p>
+<p><strong>Rationale:</strong> Copying a ready message is the easiest
+way to contaminate the experiment by accident.</p>
+<h3 id="warning-duplicated-imported-and-draft-campaigns">⚠️ Duplicated,
+imported and draft campaigns</h3>
+<p>When a campaign is duplicated, imported from a template, or never
+published: → It still counts as Built. All three are real first-time use
+of the campaign builder.</p>
+<h3 id="warning-quiet-low-traffic-sites">⚠️ Quiet, low-traffic
+sites</h3>
+<p>When a site gets so little traffic that its scheduled tasks rarely
+run: → Admin visits to the dashboard also trigger sending, and every
+weekly check-in repeats the milestones reached, so a lost one is
+recovered.</p>
+<h3 id="warning-wrong-clocks">⚠️ Wrong clocks</h3>
+<p>When a site's clock is far off: → We also record when we received
+each event, and flag big gaps as a data-quality issue rather than
+dropping the event.</p>
+<h2 id="success-criteria">Success Criteria</h2>
+<h3 id="tracking">Tracking</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" disabled />A site shares nothing until someone
+opts in, and nothing identified until the account holder opts in to
+"Help me succeed."</label></li>
+<li><label><input type="checkbox" disabled />Each Thrive Leads milestone is
+recorded exactly once per site, even after retries, reinstalls and
+restored backups.</label></li>
+<li><label><input type="checkbox" disabled />The owner previewing their campaign
+doesn't make it Live; one test sign-up doesn't make it First
+value.</label></li>
+<li><label><input type="checkbox" disabled />Upgrading PHP or WordPress updates
+the existing profile within a day, with no duplicate
+record.</label></li>
+<li><label><input type="checkbox" disabled />Turning off "Help me succeed"
+removes the site from the console and deletes its identified
+data.</label></li>
+<li><label><input type="checkbox" disabled />Nothing about tracking adds any load
+time for the customer's visitors.</label></li>
+</ul>
+<h3 id="console">Console</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" disabled />Support can open Today's focus, open
+a customer, copy a message, and log a contact in under a
+minute.</label></li>
+<li><label><input type="checkbox" disabled />Every "stuck" number in the funnel
+matches the number of rows in the filtered list.</label></li>
+<li><label><input type="checkbox" disabled />The Product role never sees a name,
+email or site address anywhere, including exports.</label></li>
+<li><label><input type="checkbox" disabled />Every look at a customer's details
+and every export appears in the access log.</label></li>
+<li><label><input type="checkbox" disabled />Holdout accounts can't be logged as
+contacted, and show no outbound message.</label></li>
+</ul>
+<h3 id="outcomes">Outcomes</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" disabled />The share of new activations
+reaching First value within 30 days is visible per product, and is the
+main number we report.</label></li>
+<li><label><input type="checkbox" disabled />The pilot gives a clear yes or no on
+outreach for Live to First value, at the planned size.</label></li>
+</ul>
+<h2 id="out-of-scope">Out of Scope</h2>
+<ul>
+<li>Charts and dashboards for product managers inside the console. Those
+live in Metabase.</li>
+<li>Sending email from the console, and syncing lists to an email tool.
+Export is the hand-off for now.</li>
+<li>Showing stage inside the helpdesk sidebar. Planned once the pilot
+shows outreach works.</li>
+<li>Automated nudges (in-product or email) for the long tail. Same
+condition.</li>
+<li>Products other than Thrive Leads, until each owner signs off its
+stages.</li>
+<li>Any change to the existing anonymous tracking promise.</li>
+<li>History of profile values.</li>
+</ul>
+<h2 id="open-questions">Open Questions</h2>
+<ul class="task-list">
+<li><label><input type="checkbox" disabled /><strong>Legal:</strong> does the
+draft "Help me succeed" copy cover collecting and contacting? What are
+the retention periods for raw events, stages and identified data, and
+after withdrawal?</label></li>
+<li><label><input type="checkbox" disabled /><strong>Awesome Motive:</strong>
+does a shared usage service already exist (behind WPForms' and
+MonsterInsights' tracking) that we should join instead of building our
+own?</label></li>
+<li><label><input type="checkbox" disabled /><strong>Thrive Leads owner:</strong>
+do shortcodes, ThriveBoxes and one-click signups count as campaigns for
+Built and Live?</label></li>
+<li><label><input type="checkbox" disabled /><strong>Thrive Leads owner:</strong>
+is "leads from two different people" the right First value, or is one
+real lead enough?</label></li>
+<li><label><input type="checkbox" disabled /><strong>Support lead:</strong> who
+works the pilot, and how many contacts a day is realistic?</label></li>
+<li><label><input type="checkbox" disabled /><strong>Everyone:</strong> will we
+want PHP and WordPress history later, for example to check whether
+upgrading correlates with reaching First value? The profile keeps only
+the latest values today.</label></li>
+<li><label><input type="checkbox" disabled /><strong>Thrive Automator:</strong>
+it's listed on WordPress.org, has its own consent screens, and isn't
+part of the shared consent today. How does it join?</label></li>
+<li><label><input type="checkbox" disabled /><strong>Supply:</strong> today's
+opt-in rate is unknown. If it's low, the pilot will take too long to be
+useful. Can we measure it before building, and plan a re-invite for
+already-connected customers?</label></li>
+</ul>
+    </article>
+  </div>
+
+  <script>
+    (() => {
+      const details = document.getElementById('toc-details');
+      // Open beside the text on wide screens, folded above it on narrow ones.
+      const narrow = window.matchMedia('(max-width: 960px)');
+      details.open = !narrow.matches;
+      narrow.addEventListener('change', (e) => { details.open = !e.matches; });
+
+      const links = Array.from(document.querySelectorAll('.toc a[href^="#"]'));
+      links.forEach((a) => a.addEventListener('click', () => { if (narrow.matches) details.open = false; }));
+      const targets = links
+        .map((a) => [a, document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1)))])
+        .filter(([, h]) => h);
+
+      // Highlight the section being read.
+      let ticking = false;
+      const update = () => {
+        ticking = false;
+        let current = null;
+        for (const [a, h] of targets) {
+          if (h.getBoundingClientRect().top < 120) current = a;
+          else break;
+        }
+        links.forEach((a) => a.classList.toggle('active', a === current));
+      };
+      window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+      update();
+    })();
+  </script>
+</body>
+</html>
